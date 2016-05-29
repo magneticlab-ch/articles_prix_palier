@@ -1,0 +1,106 @@
+<openerp>
+	<data>
+
+	 <record model="ir.ui.view" id="product_normal_form_view">
+      <field name="name">product_normal_form_view</field>
+      <field name="model">product.product</field>
+      <field name="inherit_id" ref="product.product_normal_form_view"/>
+      <field name="arch" type="xml">
+        <xpath expr="//field[@name='description']" position="before">
+          <group name="paliers" string="Prix par palier PP">
+            	<group>
+            		<field name="qte_1_titre"/>
+					<field name="qte_2_titre"/>
+					<field name="qte_3_titre"/>
+					<field name="qte_4_titre"/>
+					<field name="qte_5_titre"/>
+				</group>
+				<group>
+					<field name="qte_1"/>
+					<field name="qte_2"/>
+					<field name="qte_3"/>
+					<field name="qte_4"/>
+					<field name="qte_5"/>
+          		</group>
+          	</group>
+        </xpath>
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="product_template_only_form_view">
+      <field name="name">product_template_form_view</field>
+      <field name="model">product.template</field>
+      <field name="inherit_id" ref="product.product_template_only_form_view"/>
+      <field name="arch" type="xml">
+        <xpath expr="//field[@name='description']" position="before">
+          <group name="paliers" string="Prix par palier PT"  attrs="{'invisible': [('product_variant_count', '&gt;', 1)]}">
+            	<group>
+            		<field name="qte_1_titre"/>
+					<field name="qte_2_titre"/>
+					<field name="qte_3_titre"/>
+					<field name="qte_4_titre"/>
+					<field name="qte_5_titre"/>
+				</group>
+				<group>
+					<field name="qte_1"/>
+					<field name="qte_2"/>
+					<field name="qte_3"/>
+					<field name="qte_4"/>
+					<field name="qte_5"/>
+          		</group>
+          	</group>
+        </xpath>
+      </field>
+    </record>
+
+   <!-- <record model="ir.ui.view" id="product_template_form_view">
+      <field name="name">product_template_form_view</field>
+      <field name="model">product.template</field>
+      <field name="inherit_id" ref="product.product_template_form_view"/>
+      <field name="arch" type="xml">
+        <xpath expr="//field[@name='description']" position="before">
+          <group name="paliers" string="Prix par palier">
+            	<group>
+            		<field name="qte_1_titre"/>
+					<field name="qte_2_titre"/>
+					<field name="qte_3_titre"/>
+					<field name="qte_4_titre"/>
+					<field name="qte_5_titre"/>
+				</group>
+				<group>
+					<field name="qte_1"/>
+					<field name="qte_2"/>
+					<field name="qte_3"/>
+					<field name="qte_4"/>
+					<field name="qte_5"/>
+          		</group>
+          	</group>
+        </xpath>
+      </field>
+    </record>
+
+		<record model="ir.ui.view" id="product_template_only_form_view">
+      <field name="name">product_template_form_view</field>
+      <field name="model">product.template</field>
+      <field name="inherit_id" ref="product.product_template_only_form_view"/>
+      <field name="arch" type="xml">
+         <xpath expr="//field[@name='list_price']" position="after">
+					<field name="qte_1_titre"/>
+					<field name="qte_2_titre"/>
+					<field name="qte_3_titre"/>
+					<field name="qte_4_titre"/>
+					<field name="qte_5_titre"/>
+				</xpath>
+
+				<xpath expr="//field[@name='default_code']" position="after">
+					<field name="qte_1"/>
+					<field name="qte_2"/>
+					<field name="qte_3"/>
+					<field name="qte_4"/>
+					<field name="qte_5"/>
+				</xpath>
+      </field>
+    </record>-->
+	
+	</data>
+</openerp>

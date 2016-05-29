@@ -1,0 +1,1 @@
+from . import articles_prix_palier
