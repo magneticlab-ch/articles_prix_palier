@@ -1,106 +1,178 @@
-<openerp>
-	<data>
-
+<odoo> 
 	 <record model="ir.ui.view" id="product_normal_form_view">
       <field name="name">product_normal_form_view</field>
       <field name="model">product.product</field>
       <field name="inherit_id" ref="product.product_normal_form_view"/>
       <field name="arch" type="xml">
-        <xpath expr="//field[@name='description']" position="before">
-          <group name="paliers" string="Prix par palier PP">
-            	<group>
-            		<field name="qte_1_titre"/>
-					<field name="qte_2_titre"/>
-					<field name="qte_3_titre"/>
-					<field name="qte_4_titre"/>
-					<field name="qte_5_titre"/>
-				</group>
-				<group>
-					<field name="qte_1"/>
-					<field name="qte_2"/>
-					<field name="qte_3"/>
-					<field name="qte_4"/>
-					<field name="qte_5"/>
-          		</group>
-          	</group>
-        </xpath>
-      </field>
-    </record>
-
-    <record model="ir.ui.view" id="product_template_only_form_view">
-      <field name="name">product_template_form_view</field>
-      <field name="model">product.template</field>
-      <field name="inherit_id" ref="product.product_template_only_form_view"/>
-      <field name="arch" type="xml">
-        <xpath expr="//field[@name='description']" position="before">
-          <group name="paliers" string="Prix par palier PT"  attrs="{'invisible': [('product_variant_count', '&gt;', 1)]}">
-            	<group>
-            		<field name="qte_1_titre"/>
-					<field name="qte_2_titre"/>
-					<field name="qte_3_titre"/>
-					<field name="qte_4_titre"/>
-					<field name="qte_5_titre"/>
-				</group>
-				<group>
-					<field name="qte_1"/>
-					<field name="qte_2"/>
-					<field name="qte_3"/>
-					<field name="qte_4"/>
-					<field name="qte_5"/>
-          		</group>
-          	</group>
-        </xpath>
-      </field>
-    </record>
-
-   <!-- <record model="ir.ui.view" id="product_template_form_view">
-      <field name="name">product_template_form_view</field>
-      <field name="model">product.template</field>
-      <field name="inherit_id" ref="product.product_template_form_view"/>
-      <field name="arch" type="xml">
-        <xpath expr="//field[@name='description']" position="before">
+        <xpath expr="//page/group/group[@name='group_standard_price']" position="after">
           <group name="paliers" string="Prix par palier">
             	<group>
             		<field name="qte_1_titre"/>
 					<field name="qte_2_titre"/>
-					<field name="qte_3_titre"/>
-					<field name="qte_4_titre"/>
-					<field name="qte_5_titre"/>
+          <field name="qte_3_titre"/>
+          <field name="qte_4_titre"/>
+          <field name="qte_5_titre"/>          
+          <field name="qte_6_titre"/>
+          <field name="qte_7_titre"/>
+          <field name="qte_8_titre"/>
 				</group>
 				<group>
 					<field name="qte_1"/>
 					<field name="qte_2"/>
-					<field name="qte_3"/>
-					<field name="qte_4"/>
-					<field name="qte_5"/>
+          <field name="qte_3"/>
+          <field name="qte_4"/>
+          <field name="qte_5"/>          
+          <field name="qte_6"/>
+          <field name="qte_7"/>
+          <field name="qte_8"/>
           		</group>
           	</group>
         </xpath>
       </field>
     </record>
 
-		<record model="ir.ui.view" id="product_template_only_form_view">
+   <record model="ir.ui.view" id="product_template_only_form_view">
       <field name="name">product_template_form_view</field>
       <field name="model">product.template</field>
       <field name="inherit_id" ref="product.product_template_only_form_view"/>
       <field name="arch" type="xml">
-         <xpath expr="//field[@name='list_price']" position="after">
-					<field name="qte_1_titre"/>
-					<field name="qte_2_titre"/>
-					<field name="qte_3_titre"/>
-					<field name="qte_4_titre"/>
-					<field name="qte_5_titre"/>
-				</xpath>
-
-				<xpath expr="//field[@name='default_code']" position="after">
-					<field name="qte_1"/>
-					<field name="qte_2"/>
-					<field name="qte_3"/>
-					<field name="qte_4"/>
-					<field name="qte_5"/>
-				</xpath>
+        <xpath expr="//page/group/group[@name='group_standard_price']" position="after">
+          <group name="paliers" string="Prix par palier">
+            	<group>
+                <field name="qte_1_titre"/>
+          <field name="qte_2_titre"/>
+          <field name="qte_3_titre"/>
+          <field name="qte_4_titre"/>
+          <field name="qte_5_titre"/>          
+          <field name="qte_6_titre"/>
+          <field name="qte_7_titre"/>
+          <field name="qte_8_titre"/>
+        </group>
+        <group>
+          <field name="qte_1"/>
+          <field name="qte_2"/>
+          <field name="qte_3"/>
+          <field name="qte_4"/>
+          <field name="qte_5"/>          
+          <field name="qte_6"/>
+          <field name="qte_7"/>
+          <field name="qte_8"/>
+              </group>
+            </group>
+        </xpath>
       </field>
-    </record>-->
-	
-	</data>
-</openerp>
+    </record> 
+
+    <record model="ir.ui.view" id="product_public_category_form">
+      <field name="name">product_public_category_form</field>
+      <field name="model">product.public.category</field>
+      <field name="inherit_id" ref="website_sale.product_public_category_form_view"/>
+      <field name="arch" type="xml">
+        <xpath expr="//div" position="after">
+           <notebook>
+            <page string="Quantités">
+          <group>
+            <group>
+              <field name="tblCatQte1"/>
+              <field name="tblCatQte2"/>
+              <field name="tblCatQte3"/>
+              <field name="tblCatQte4"/>
+            </group>
+            <group>
+              <field name="tblCatQte5"/>          
+              <field name="tblCatQte6"/>
+              <field name="tblCatQte7"/>
+              <field name="tblCatQte8"/>  
+            </group>            
+          </group>
+        </page>
+        <page string="Instructions">
+          <group>        
+              <field name="tblCatRem"/>
+              <field name="tblCatPrix"/>
+              <field name="tblCatLivraison"/>
+              <field name="tblCatCondition"/>
+              <field name="tblCatDelai"/>
+            </group>
+          </page>
+          <page string="Contenu">
+            <group>
+              <field name="tblCatCont1"/>
+              <field name="tblCatCont2"/>
+              <field name="tblCatCont3"/>
+            </group>
+          </page>
+          <page string="Colonnes">
+            <group>
+              <field name="tblCatCol1"/>
+              <field name="tblCatCol2"/>
+              <field name="tblCatCol3"/>
+              <field name="tblCatCol4"/>
+              <field name="tblCatCol5"/> 
+            </group> 
+          </page>
+</notebook> 
+        </xpath>
+      </field>
+    </record> 
+
+
+    <template id="category_detail" inherit_id="website_sale.products_categories" active="True" customize_show="True" name="Category detail">
+ 
+      
+       <xpath expr="//div[@class='products_pager']" position="before"> 
+         
+                <div class="container text-center">
+                 <t t-if="category">
+                  <h1 t-field="category.name"></h1>
+                  <p>
+                    <span t-field="category.tblCatRem"/>
+                  </p>
+                  <p>
+                    <span t-field="category.tblCatPrix"/>
+                  </p>
+                  <p>
+                    <span t-field="category.tblCatLivraison"/>
+                  </p>
+                  <p>
+                    <span t-field="category.tblCatCondition"/>
+                  </p>
+                </t>
+                </div>        
+             
+       </xpath>
+   
+</template>
+    
+   <!--<template id="website.maintenance_mode" inherit_id="website.layout" active="True" customize_show="True" name="Test mlab"  groups="base.group_public">
+    <xpath expr="//div[@id='wrapwrap']" position="replace"> 
+      <div class="page-wrapper oe_structure">
+        <div class="section clearfix">
+          <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                  <h1 class="text-center">Maintenance du site...</h1>
+                </div>
+            </div>
+          </div>
+        </div>
+        <div class="page-top section gray-bg ">
+            <div class="container">
+              <div class="row">
+                <div class="col-md-8 col-md-offset-2">
+                  <div class="call-to-action">
+                    <h1 class="title">CDF EMBALLAGE SA</h1>
+                    <p>Manufacture d'emballage depuis 1978 </p>         
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+         
+      </div>
+    </xpath>
+   </template>
+ -->
+
+</odoo>

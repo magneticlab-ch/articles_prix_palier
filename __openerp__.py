@@ -7,6 +7,7 @@
     'website': "http://www.magneticlab.ch",
     'category': 'Product',
     'version': '1',
-    'depends': ['product'],
-    'data': [ 'prix_palier.xml']
+    'depends': ['product','website_sale'],
+    'data': [ 'prix_palier.xml'],
+    'css': ['static/src/css/mlab.css'],
 }
