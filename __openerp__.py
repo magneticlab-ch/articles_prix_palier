@@ -8,6 +8,6 @@
     'category': 'Product',
     'version': '1',
     'depends': ['product','website_sale'],
-    'data': [ 'prix_palier.xml'],
-    'css': ['static/src/css/mlab.css'],
+    'data': [ 'prix_palier.xml','views/qweb.xml'],
+    'css': ['static/src/css/articles_prix_palier.css'],
 }

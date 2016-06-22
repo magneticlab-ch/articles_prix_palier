@@ -1,5 +1,332 @@
 <?xml version="1.0" encoding="utf-8"?>
-<openerp>
-<data>
-</data>
-</openerp>
+<odoo>
+	<!-- AJOUT DES CSS -->
+	<template id="articles_prix_paliers" name="Prix par paliers" inherit_id="website.assets_frontend">
+	    <xpath expr="link[last()]" position="after">
+	    	<link href='https://fonts.googleapis.com/css?family=Titillium+Web:400,200,200italic,300,300italic,400italic,600,600italic,700,700italic,900' rel='stylesheet' type='text/css'/>
+	        <link href="/articles_prix_palier/static/src/css/articles_prix_palier.css" rel="stylesheet"/>
+	    </xpath>
+	</template>
+	<!-- FIN AJOUT DES CSS -->
+
+	<!-- MODIFICATION DU HEADER -->
+	<template id="header_mlab" name="Header MLAB" inherit_id="theme_louma.custom_navbar">
+	    <xpath expr="//div[@id='header-top-second']" position="replace">
+	    	<div id="header-top-second"  class="clearfix">
+				<!-- header top dropdowns start -->
+					<div class="header-top-dropdown">										
+						<div class="btn-group dropdown">
+							<button type="button" class="btn dropdown-toggle" data-toggle="dropdown"><i class="fa fa-search"></i> Chercher</button>
+							<ul class="dropdown-menu dropdown-menu-right dropdown-animation">
+								<li>
+									<form action="/shop" role="search" class="search-box search_class">
+										<div class="form-group has-feedback">
+											<input type="text" name="search" id="search" value="" class="form-control" placeholder="Search"/>
+											<i class="fa fa-search form-control-feedback"></i>
+										</div>
+									</form>
+								</li>
+							</ul>
+						</div>
+						<div class="btn-group dropdown" t-ignore="true" t-if="website.user_id == user_id">
+							<a class="btn" href="/web/login"><i class="fa fa-user"></i> Connexion</a>
+						</div>
+						<div class="btn-group dropdown" t-ignore="true" t-if="website.user_id == user_id">
+							<a class="btn" href="/web/signup"><i class="fa fa-user-plus"></i> Inscription</a>
+						</div>
+						<div class="btn-group dropdown hidden-xs" t-ignore="true" t-if="website.user_id != user_id">
+						<button type="button" class="dropdown-toggle btn"  data-toggle="dropdown">
+							<i class="fa fa-user"></i>  <span t-esc="user_id.name" />  <span class="caret"></span>
+						</button>
+						<ul class="dropdown-menu dropdown-menu-right dropdown-animation">
+							<li>
+								<a href="/web" role="menuitem">Mon compte</a>
+							</li>
+							<li>
+								<a t-attf-href="/web/session/logout?redirect=/" role="menuitem">Déconnexion
+								</a>
+							</li>
+						</ul>
+						</div>                                        
+						
+					</div>
+				<!--  header top dropdowns end -->
+			</div>
+		<!-- header-top-second end -->
+	    	 
+	    </xpath>
+	</template>
+	<!-- MODIFICATION DU HEADER -->
+
+	<!-- PAGE CATEGORIES -->
+	<template id="category_detail" inherit_id="website_sale.products_categories" active="True" customize_show="True" name="Category detail">
+
+		<!-- Suppression de la pagination -->		
+		<xpath expr="//div[@class='products_pager']" position="replace">			
+				<t t-if="search">
+					<div style="text-align: center!important;">
+		            	<div class="row" style="width: 100%;">
+		              		<t t-call="website_sale.search"><t t-set="search_class">pagination form-inline</t></t>		               
+		            	</div>
+		        	</div>
+		        </t>		 	 
+		</xpath> 				
+		<xpath expr="//div[@class='products_pager']" position="replace">
+		</xpath> 
+		<!-- Fin Suppression de la pagination -->
+		
+		
+
+		<!-- NOM DE LA CATEGORIE ET DESCRIPTION -->
+		<xpath expr="//div[@id='products_grid']" position="before">
+			<div class="col-md-8">
+				<t t-if="category">					
+				  	<t t-if="category.parent_id"> 
+				  		<div class="row">
+				  			<h1 t-field="category.name"></h1>
+				  		</div>
+				  		<div class="row">
+				  			<div class="col-md-3">
+				  				<span itemprop="image" t-field="category.image" t-field-options='{"widget": "image", "class": "fix-height-portfolio-4col", "alt-field": "name"}'/>	
+				  			</div>
+					  		<div class="col-sm-6">							  	
+								<p><span t-field="category.description"/></p>								
+							</div>
+						</div>
+					</t>
+				</t>
+			</div>			 
+		</xpath>  
+		<xpath expr="//div[@id='products_grid']" position="after">			
+				<t t-if="category">					
+				  	<t t-if="category.parent_id"> 	 	
+				  			<div class="col-sm-4">
+				  			</div>		  			
+					  		<div class="col-sm-8">							  	
+								<p class="categorie_footer"><span t-field="category.tblCatRem"/> <span t-field="category.tblCatPrix"/> <span t-field="category.tblCatLivraison"/>
+								<span t-field="category.tblCatCondition"/></p>
+							</div>						 
+					</t>
+				</t>
+					 
+		</xpath> 
+		<!-- FIN NOM DE LA CATEGORIE ET DESCRIPTION -->
+
+		<!-- LISTE DES PRODUITS OU SOUS-CATEGORIE -->
+	   	<xpath expr="//div[@id='products_grid']" position="replace">
+			<div class="col-md-8" id="products_grid">
+				<t t-if="category">
+					<!-- AFFICHAGE DES PRODUITS -->					 
+					<t t-if="category.parent_id"> 
+				   		<table width="100%">
+							<thead>
+								<tr>
+									<th><span t-field="category.tblCatCol1"></span></th>
+									<th>Larg</th>
+									<th>Long</th>
+									<th>Haut</th>
+									<th><span t-field="category.tblCatCol3"></span></th>
+									<th><span t-field="category.tblCatCol4"></span></th>
+									<th><span t-field="category.tblCatQte1"></span></th>
+									<th><span t-field="category.tblCatQte2"></span></th>
+									<th><span t-field="category.tblCatQte3"></span></th>
+									<th><span t-field="category.tblCatQte4"></span></th>
+									<th><span t-field="category.tblCatQte5"></span></th>
+									<th><span t-field="category.tblCatQte6"></span></th>
+									<th><span t-field="category.tblCatQte7"></span></th>
+									<th><span t-field="category.tblCatQte8"></span></th>
+								</tr>
+							</thead>
+						 	<tbody>
+								<tr t-foreach="products" t-as="product">
+									<t t-if="product.default_code">
+										<td><a itemprop="url" t-att-href="keep('/shop/product/%s' % slug(product), page=(pager['page']['num'] if pager['page']['num']>1 else None))"><span t-field="product.default_code"></span></a></td>
+			                      		<td><span  t-esc='"%0.0f" % product.width'></span>mm</td>
+			                      		<td><span  t-esc='"%0.0f" % product.length'></span>mm</td>
+			                      		<td><span  t-esc='"%0.0f" % product.height'></span>mm</td>
+			                      		<td><span t-field="product.description"></span></td>
+			                      		<td><span t-field="product.volume"></span></td>
+			                      		<td><span t-field="product.qte_1"></span></td>
+			                      		<td><span t-field="product.qte_2"></span></td>
+			                      		<td><span t-field="product.qte_3"></span></td>
+			                      		<td><span t-field="product.qte_4"></span></td>
+			                      		<td><span t-field="product.qte_5"></span></td>
+			                      		<td><span t-field="product.qte_6"></span></td>
+			                      		<td><span t-field="product.qte_7"></span></td>
+			                      		<td><span t-field="product.qte_8"></span></td>    
+		                      		</t>               
+		                     	</tr>
+				  			</tbody> 
+						</table>
+					</t>
+					<!-- FIN AFFICHAGE DES PRODUITS -->
+
+					<!-- AFFICHAGE DES SOUS-CATEGORIES -->
+					<t t-if="not category.parent_id"> 
+						<div class="page-wrapper oe_structure">
+							<section class="main-container">
+								<div class="container">
+									<div class="row">
+										<div class="main col-md-8">
+											<h1 t-field="category.name" class="page-title"></h1>
+											<div class="separator-2"></div>
+											<p class="lead"><span t-field="category.description"></span></p>
+											<div class="image-boxes isotope-container row">
+												<t t-foreach="category.child_id" t-as="c">
+													<div class="col-md-3 col-sm-6 isotope-item web-design isotop-fix-positin">
+														<div class="image-box">
+															 
+																<span itemprop="image" t-field="c.image" t-field-options='{"widget": "image", "class": "fix-height-portfolio-4col", "alt-field": "name"}'/>							
+														 
+															<div class="image-box-body">
+																<h4 class="title"><a t-att-href="keep('/shop',category=c.id)"><span t-field="c.name"></span></a></h4>
+																<!--<p><span t-field="c.description"></span></p>-->
+															</div>
+														</div>
+													</div>
+												</t>
+											</div>
+										</div>
+									</div>
+								</div>
+							</section>
+						</div>
+					</t>
+					<!-- FIN AFFICHAGE DES SOUS-CATEGORIES -->
+				</t>
+				<t t-if="not category">
+					<div class="page-wrapper oe_structure">
+						<section class="main-container">
+							<div class="container">
+								<div class="row">
+									<div class="col-md-8">
+										<div class="image-boxes isotope-container row">
+											<t t-foreach="categories" t-as="c">
+												<div class="col-md-3 col-sm-6 isotope-item web-design isotop-fix-positin">
+													<div class="image-box">
+														<div class="overlay-container">
+															<span itemprop="image" t-field="c.image" t-field-options='{"widget": "image", "class": "fix-height-portfolio-4col", "alt-field": "name"}'/>									
+														</div>
+														<div class="image-box-body">
+															<h4 class="title"><a t-att-href="keep('/shop',category=c.id)"><span t-field="c.name"></span></a></h4>
+															<!--<p><span t-field="c.description"></span></p>-->
+														</div>
+													</div>
+												</div>
+											</t>
+										</div>
+									</div>
+								</div>
+							</div>							 
+						</section>
+					</div>								 
+				</t>
+			</div>        
+		</xpath>
+		<!-- FIN LISTE DES PRODUITS OU SOUS-CATEGORIE -->
+   	</template>
+   	<!-- FIN PAGE CATEGORIES-->
+
+   	<!-- PAGE PRODUIT -->
+   	<template id="custom_website_sale_product" inherit_id="website_sale.product">
+   		<xpath expr="//section[@id='product_detail']" position="attributes">
+   			<attribute name="class">col-md-8</attribute>
+   			<attribute name="style">float: left;</attribute>
+   		</xpath>
+
+   		<xpath expr="//section[@id='product_detail']" position="before">
+   			<section  class="col-md-4" style="margin-right: 15px; margin-left: 70px; margin-top:30px!important; padding-right:85px">
+				<div>
+					<ul id="category-widget">
+                    <h2 class="title-products_grid" style="margin: 0px 0 20px 0;">Categories</h2> 
+                    <t t-foreach="categories" t-as="c">
+                         <t t-call="website_sale.custom_categories_recursive"/>
+                    </t>
+                </ul>
+			  	</div>
+			</section>
+   		</xpath>
+   	</template>
+   	<template id="product_detail" inherit_id="theme_louma.custom_website_sale_product" name="Product detail">
+   		
+   		 <xpath expr="//span[@class='price']" position="replace">
+   		 <h4>Liste de prix</h4>   
+   		 <table width="100%">
+   		 	<thead>
+   		 		<th>Qtés</th>
+   		 		<th t-field="product.qte_1_titre"></th>
+   		 		<th t-field="product.qte_2_titre"></th>
+   		 		<th t-field="product.qte_3_titre"></th>
+   		 		<th t-field="product.qte_4_titre"></th>
+   		 		<th t-field="product.qte_5_titre"></th>
+   		 		<th t-field="product.qte_6_titre"></th>
+   		 		<th t-field="product.qte_7_titre"></th>
+   		 		<th t-field="product.qte_8_titre"></th>
+   		 	</thead>
+   		 	<tbody>
+   		 		<th><span>Prix</span></th>
+   		 		<td><span t-field="product.qte_1" widget="price"/></td>
+   		 		<td><span t-field="product.qte_2"/></td>
+   		 		<td><span t-field="product.qte_3"/></td>
+   		 		<td><span t-field="product.qte_4"/></td>
+   		 		<td><span t-field="product.qte_5"/></td>
+   		 		<td><span t-field="product.qte_6"/></td>
+   		 		<td><span t-field="product.qte_7"/></td>
+   		 		<td><span t-field="product.qte_8"/></td>
+   		 	</tbody>
+   		 </table>
+   		</xpath>
+   		<xpath expr="//div[@class='elements-list pull-right clearfix']" position="replace">   			 
+   		</xpath> 
+   		<xpath expr="//div[@class='js_product']" position="replace">   			 
+   		</xpath> 
+   		<xpath expr="//div[@id='h2tab1']" position="replace"> 
+   			<div class="tab-pane fade in active" id="h2tab1">	   			
+	            	<h4 class="title"><span t-field="product.name"/></h4>
+	            	<t t-if="category">
+	            		<p t-field="category.tblCatCont1"></p>
+	            		<p t-field="category.tblCatCont2"></p>
+	            		<p t-field="category.tblCatCont3"></p>
+	            	</t>
+	        </div>			 
+   		</xpath>
+   		<xpath expr="//h1[@class='page-title margin-top-clear']" position="replace">	   			
+	        <h1 class="page-title margin-top-clear">N° art. <span t-field="product.default_code"/></h1> 
+   		</xpath> 
+   		<xpath expr="//ul[@class='nav nav-tabs']" position="inside"> 
+   			<li><a href="#h2tab3" role="tab" data-toggle="tab"><i class="fa fa-list pr-5"></i>Variantes</a></li>
+   		</xpath>
+   		<xpath expr="//div[@id='h2tab2']" position="replace"> 
+
+   			<div class="tab-pane fade" id="h2tab2">
+	   			<h4 class="space-top">Spécifications</h4>
+	            <hr></hr>
+	            <dl class="dl-horizontal">
+	            	<dt>Qualité</dt>
+	                <dd><span t-field="product.description"/></dd>
+	                <dt>Largeur</dt>
+	                <dd><span t-esc='"%0.0f" % product.width'/>mm</dd>
+	                <dt>Longeur</dt>
+	                <dd><span t-esc='"%0.0f" % product.length'/>mm</dd>
+	                <dt>Hauteur</dt>
+	                <dd><span t-esc='"%0.0f" % product.height'/>mm</dd>
+	                <dt>Volume</dt>
+	                <dd><span t-field="product.volume"/></dd>
+	            </dl>
+	            <hr></hr> 	
+            </div>
+            <div class="tab-pane fade" id="h2tab3"> 
+            	<h4 class="space-top">Autres produits de la catégorie</h4>
+	            <hr></hr>
+	            <dl class="dl-horizontal">
+	             <t t-foreach="category.product_ids" t-as="product">
+	             	<dt style="text-align:left">
+	 <a itemprop="url" t-att-href="'/shop/product/{name}?category={cat_id}' .format( name=slug(product),  cat_id=category.id) "><span t-field="product.default_code"/></a></dt>
+	             	<dd><span t-esc='"%0.0f" % product.width'/>mm <span t-esc='"%0.0f" % product.length'/>mm <span t-esc='"%0.0f" % product.height'/>mm</dd>
+	             </t>
+	         </dl>
+            </div>		 
+   		</xpath> 
+   	</template>
+    
+</odoo>

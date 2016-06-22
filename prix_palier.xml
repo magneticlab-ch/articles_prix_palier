@@ -70,6 +70,9 @@
       <field name="arch" type="xml">
         <xpath expr="//div" position="after">
            <notebook>
+             <page string="Description">
+               <field name="description"/>
+             </page>
             <page string="Quantités">
           <group>
             <group>
@@ -111,68 +114,24 @@
               <field name="tblCatCol5"/> 
             </group> 
           </page>
+          <page string="Produits">
+             <h2>Produits dans la catégorie</h2>
+              <field name="product_ids">
+                <tree>
+                  <field name="default_code"/>
+                  <field name="name"/> 
+                </tree>
+              </field> 
+             
+           </page>
 </notebook> 
         </xpath>
       </field>
     </record> 
 
 
-    <template id="category_detail" inherit_id="website_sale.products_categories" active="True" customize_show="True" name="Category detail">
- 
-      
-       <xpath expr="//div[@class='products_pager']" position="before"> 
-         
-                <div class="container text-center">
-                 <t t-if="category">
-                  <h1 t-field="category.name"></h1>
-                  <p>
-                    <span t-field="category.tblCatRem"/>
-                  </p>
-                  <p>
-                    <span t-field="category.tblCatPrix"/>
-                  </p>
-                  <p>
-                    <span t-field="category.tblCatLivraison"/>
-                  </p>
-                  <p>
-                    <span t-field="category.tblCatCondition"/>
-                  </p>
-                </t>
-                </div>        
-             
-       </xpath>
-   
-</template>
     
-   <!--<template id="website.maintenance_mode" inherit_id="website.layout" active="True" customize_show="True" name="Test mlab"  groups="base.group_public">
-    <xpath expr="//div[@id='wrapwrap']" position="replace"> 
-      <div class="page-wrapper oe_structure">
-        <div class="section clearfix">
-          <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                  <h1 class="text-center">Maintenance du site...</h1>
-                </div>
-            </div>
-          </div>
-        </div>
-        <div class="page-top section gray-bg ">
-            <div class="container">
-              <div class="row">
-                <div class="col-md-8 col-md-offset-2">
-                  <div class="call-to-action">
-                    <h1 class="title">CDF EMBALLAGE SA</h1>
-                    <p>Manufacture d'emballage depuis 1978 </p>         
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-         
-      </div>
-    </xpath>
-   </template>
- -->
+    
+   
 
 </odoo>

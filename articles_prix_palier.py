@@ -4,6 +4,7 @@ from openerp import api
 
 class ProductProduct(models.Model):
 	_inherit = 'product.product'
+	_order = "default_code,name asc"
 
 	qte_1_titre = fields.Char( string="Palier 1")
 	qte_2_titre = fields.Char( string="Palier 2")
@@ -25,6 +26,7 @@ class ProductProduct(models.Model):
 
 class ProductTemplate(models.Model):
 	_inherit = 'product.template'
+	_order = "default_code,name asc"
 
 	qte_1_titre = fields.Char( string="Palier 1", related='product_variant_ids.qte_1_titre')
 	qte_2_titre = fields.Char( string="Palier 2", related='product_variant_ids.qte_2_titre')
@@ -47,6 +49,7 @@ class ProductTemplate(models.Model):
 class ProductPublicCategory(models.Model):
 	_inherit = 'product.public.category'
 
+	description = fields.Text( string="Description")
 	tblCatQte1	= fields.Char( string="Titre qte 1")
 	tblCatQte2	= fields.Char( string="Titre qte 2")
 	tblCatQte3	= fields.Char( string="Titre qte 3")
@@ -68,5 +71,7 @@ class ProductPublicCategory(models.Model):
 	tblCatCol3	= fields.Char( string="Titre col 3")
 	tblCatCol4	= fields.Char( string="Titre col 4")
 	tblCatCol5  = fields.Char( string="Titre col 5")
+	product_ids = fields.Many2many('product.template', string="Produits dans la catégorie")
+
 
 
