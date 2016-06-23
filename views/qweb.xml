@@ -4,7 +4,8 @@
 	<template id="articles_prix_paliers" name="Prix par paliers" inherit_id="website.assets_frontend">
 	    <xpath expr="link[last()]" position="after">
 	    	<link href='https://fonts.googleapis.com/css?family=Titillium+Web:400,200,200italic,300,300italic,400italic,600,600italic,700,700italic,900' rel='stylesheet' type='text/css'/>
-	        <link href="/articles_prix_palier/static/src/css/articles_prix_palier.css" rel="stylesheet"/>
+	        <link href="/articles_prix_palier/static/src/css/articles_prix_palier.css" rel="stylesheet"/> 
+	        <script type="text/javascript" src="/articles_prix_palier/static/src/js/custom.js"></script> 
 	    </xpath>
 	</template>
 	<!-- FIN AJOUT DES CSS -->
@@ -75,37 +76,40 @@
 		</xpath> 
 		<!-- Fin Suppression de la pagination -->
 		
-		
 
 		<!-- NOM DE LA CATEGORIE ET DESCRIPTION -->
 		<xpath expr="//div[@id='products_grid']" position="before">
 			<div class="col-md-8">
-				<t t-if="category">					
-				  	<t t-if="category.parent_id"> 
-				  		<div class="row">
-				  			<h1 t-field="category.name"></h1>
-				  		</div>
-				  		<div class="row">
-				  			<div class="col-md-3">
-				  				<span itemprop="image" t-field="category.image" t-field-options='{"widget": "image", "class": "fix-height-portfolio-4col", "alt-field": "name"}'/>	
-				  			</div>
-					  		<div class="col-sm-6">							  	
-								<p><span t-field="category.description"/></p>								
+				<t t-if="not search">
+					<t t-if="category">					
+					  	<t t-if="category.parent_id"> 
+					  		<div class="row">
+					  			<h1 t-field="category.name"></h1>
+					  		</div>
+					  		<div class="row">
+					  			<div class="col-md-3">
+					  				<span itemprop="image" t-field="category.image" t-field-options='{"widget": "image", "class": "fix-height-portfolio-4col", "alt-field": "name"}'/>	
+					  			</div>
+						  		<div class="col-sm-6">							  	
+									<p><span t-field="category.description"/></p>								
+								</div>
 							</div>
-						</div>
+						</t>
 					</t>
 				</t>
 			</div>			 
 		</xpath>  
 		<xpath expr="//div[@id='products_grid']" position="after">			
-				<t t-if="category">					
-				  	<t t-if="category.parent_id"> 	 	
-				  			<div class="col-sm-4">
-				  			</div>		  			
-					  		<div class="col-sm-8">							  	
-								<p class="categorie_footer"><span t-field="category.tblCatRem"/> <span t-field="category.tblCatPrix"/> <span t-field="category.tblCatLivraison"/>
-								<span t-field="category.tblCatCondition"/></p>
-							</div>						 
+				<t t-if="category">	
+					<t t-if="not search">					
+					  	<t t-if="category.parent_id"> 	 	
+					  			<div class="col-sm-4">
+					  			</div>		  			
+						  		<div class="col-sm-8">							  	
+									<p class="categorie_footer"><span t-field="category.tblCatRem"/> <span t-field="category.tblCatPrix"/> <span t-field="category.tblCatLivraison"/>
+									<span t-field="category.tblCatCondition"/></p>
+								</div>						 
+						</t>
 					</t>
 				</t>
 					 
@@ -115,8 +119,41 @@
 		<!-- LISTE DES PRODUITS OU SOUS-CATEGORIE -->
 	   	<xpath expr="//div[@id='products_grid']" position="replace">
 			<div class="col-md-8" id="products_grid">
-				<t t-if="category">
-					<!-- AFFICHAGE DES PRODUITS -->					 
+				<t t-if="search">
+					<h1>Résultat de votre recherche</h1>
+					<div class="col-md-12" id="products_grid">					
+					<t t-if="bins">
+						<table width="100%">
+	              			<thead>
+								<tr>
+									<th>N° art.</th>
+									<th>Nom</th>
+								</tr>
+							</thead>
+	                	<tbody>
+		                	<tr t-foreach="products" t-as="product">
+								<t t-if="product.default_code">
+									<td>
+										<a itemprop="url" t-att-href="'/shop/product/{name}?category={cat_id}' .format( name=slug(product),  cat_id=product.public_categ_ids[0].id) "><span t-field="product.default_code"/><span t-field="product.default_code"></span></a></td>
+									<td><span t-field="product.name"></span></td>    
+				                </t>               
+				            </tr>
+		                </tbody>
+	              	</table>
+	            </t>
+              	<t t-if="not bins">
+                	<div class="text-muted">
+                  		<h3 class="css_editable_display">Aucun résultat <t t-if="category">dans cette catégorie!</t></h3>
+                  		<t groups="base.group_website_publisher">
+                    	<p groups="base.group_sale_manager">Modifiez votre critère de recherche ou <a href="page/contactus" class="btn btn-default btn-sm">contactez-nous <i class="fa fa-phone"></i></a></p>
+                 		</t>
+                	</div>
+              	</t>
+            </div>
+           
+				</t>
+				<t t-if="category and not search">
+					<!-- AFFICHAGE DES PRODUITS -->	
 					<t t-if="category.parent_id"> 
 				   		<table width="100%">
 							<thead>
@@ -162,7 +199,7 @@
 					<!-- FIN AFFICHAGE DES PRODUITS -->
 
 					<!-- AFFICHAGE DES SOUS-CATEGORIES -->
-					<t t-if="not category.parent_id"> 
+					<t t-if="not category.parent_id and not search"> 
 						<div class="page-wrapper oe_structure">
 							<section class="main-container">
 								<div class="container">
@@ -194,7 +231,7 @@
 					</t>
 					<!-- FIN AFFICHAGE DES SOUS-CATEGORIES -->
 				</t>
-				<t t-if="not category">
+				<t t-if="not category and not search">
 					<div class="page-wrapper oe_structure">
 						<section class="main-container">
 							<div class="container">
@@ -317,14 +354,19 @@
             </div>
             <div class="tab-pane fade" id="h2tab3"> 
             	<h4 class="space-top">Autres produits de la catégorie</h4>
-	            <hr></hr>
+	            <hr></hr>	            
 	            <dl class="dl-horizontal">
-	             <t t-foreach="category.product_ids" t-as="product">
-	             	<dt style="text-align:left">
-	 <a itemprop="url" t-att-href="'/shop/product/{name}?category={cat_id}' .format( name=slug(product),  cat_id=category.id) "><span t-field="product.default_code"/></a></dt>
-	             	<dd><span t-esc='"%0.0f" % product.width'/>mm <span t-esc='"%0.0f" % product.length'/>mm <span t-esc='"%0.0f" % product.height'/>mm</dd>
-	             </t>
-	         </dl>
+	            	<t t-if="category">
+	             		<t t-foreach="category.product_ids" t-as="product">
+	             			<dt style="text-align:left">
+	 						<a itemprop="url" t-att-href="'/shop/product/{name}?category={cat_id}' .format( name=slug(product),  cat_id=category.id) "><span t-field="product.default_code"/></a>
+	 						</dt>
+	             			<dd>
+	             				<span t-esc='"%0.0f" % product.width'/>mm <span t-esc='"%0.0f" % product.length'/>mm <span t-esc='"%0.0f" % product.height'/>mm
+	             			</dd>
+	             		</t>
+	             	</t>
+	         	</dl>
             </div>		 
    		</xpath> 
    	</template>

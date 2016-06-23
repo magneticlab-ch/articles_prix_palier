@@ -18,3 +18,4 @@ font-size:0.8em;
 .shadow_black{text-shadow:1px 1px 2px rgba(0,0,0,1);}
 .shadow_white{text-shadow:1px 1px 2px rgba(255,255,255,1);}
 .subtitle{font-size: 20pt!important;color:#fff;font-weight: 200;}
+#menu_odoo{display:none!important}
